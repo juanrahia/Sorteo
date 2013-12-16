@@ -47,14 +47,20 @@ public class Sorteo extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabelCentenas.setBackground(new java.awt.Color(204, 255, 204));
+        jLabelCentenas.setFont(new java.awt.Font("Tahoma", 0, 112)); // NOI18N
+        jLabelCentenas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelCentenas.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jLabelCentenas.setOpaque(true);
 
         jLabelDecenas.setBackground(new java.awt.Color(204, 255, 204));
+        jLabelDecenas.setFont(new java.awt.Font("Tahoma", 0, 112)); // NOI18N
+        jLabelDecenas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelDecenas.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jLabelDecenas.setOpaque(true);
 
         jLabelUnidades.setBackground(new java.awt.Color(204, 255, 204));
+        jLabelUnidades.setFont(new java.awt.Font("Tahoma", 0, 112)); // NOI18N
+        jLabelUnidades.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelUnidades.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jLabelUnidades.setOpaque(true);
 
@@ -122,33 +128,74 @@ public class Sorteo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarActionPerformed
-        //Recoger número máximo
+        //Recoger número máximo.
         int numMaximo = Integer.valueOf(jTextFieldNumMax.getText());
         
         //Generar Número premiado
         Random generador = new Random();
-        int numPremiado = generador.nextInt(numMaximo-1) + 1 ;
+        int numAleatorio = generador.nextInt(numMaximo);
         
-        //Mostrar los números en pantalla.
-        for (int cont; cont<30; cont++){
-            jLabelCentenas.setText("" + (generador.nextInt(9) + 1));
+        //Condiciones para el control de los digitos en caso de ser menor 100 ó 10
+        String numPremiado;
+        if(numAleatorio > 99){
+            numPremiado = "" + numAleatorio;
+        }else{
+            if(numAleatorio<10){
+                numPremiado = "00" + numAleatorio;
+            }else{
+                numPremiado = "0" + numAleatorio;
+            }
+        }
+        
+        //Mostrar los números en pantalla.Las tres unidades giran
+        //Acaban las centenas y se muestra en la pantalla el valor centenas 
+        //del numPremiado 
+        for (int cont1 = 0; cont1 < 40; cont1++) {
+            jLabelUnidades.setText("" + (generador.nextInt(10)));
+            jLabelUnidades.paintImmediately(0, 0, jLabelUnidades.getWidth(), jLabelUnidades.getHeight());
+            jLabelDecenas.setText("" + (generador.nextInt(10)));
+            jLabelDecenas.paintImmediately(0, 0, jLabelDecenas.getWidth(), jLabelDecenas.getHeight());
+            jLabelCentenas.setText("" + (generador.nextInt(10)));
             jLabelCentenas.paintImmediately(0, 0, jLabelCentenas.getWidth(), jLabelCentenas.getHeight());
-            jLabelDecenas.setText("" + (generador.nextInt(9) + 1));
-            jLabelDecenas.paintImmediately(0, 0, jLabelDecenas.getWidth(), jLabelCentenas.getHeight());
-            jLabelUnidades.setText("" + (generador.nextInt(9) + 1));
-            jLabelUnidades.paintImmediately(0, 0, jLabelUnidades.getWidth(), jLabelCentenas.getHeight());
-            
             try {
-                Thread.sleep(500);
+                Thread.sleep(80);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Sorteo.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            if (cont == 10){
-                jLabelDecenas.setText();
-            }
-        }   
+        }
+        jLabelCentenas.setText(numPremiado.substring(0,1));
+        jLabelCentenas.paintImmediately(0, 0, jLabelCentenas.getWidth(), jLabelCentenas.getHeight());
         
+        //Siguen girando números aleatorios. Ahora solo Unidades y decenas
+        //Al final se muestra en pantalla el digito decenas del numPremiado
+        for (int cont2 = 0; cont2 < 40; cont2++) {
+            jLabelUnidades.setText("" + (generador.nextInt(9) + 1));
+            jLabelUnidades.paintImmediately(0, 0, jLabelUnidades.getWidth(), jLabelUnidades.getHeight());
+            jLabelDecenas.setText("" + (generador.nextInt(9) + 1));
+            jLabelDecenas.paintImmediately(0, 0, jLabelDecenas.getWidth(), jLabelDecenas.getHeight());
+            try {
+                Thread.sleep(80);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Sorteo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        jLabelDecenas.setText(numPremiado.substring(1,2));
+        jLabelDecenas.paintImmediately(0, 0, jLabelDecenas.getWidth(), jLabelDecenas.getHeight());
+        
+        //Solo quedan las unidades girando.
+        //Al final se muestra el numero unidades del numPremiado
+        for (int cont3 = 0; cont3 < 40; cont3++) {
+            jLabelUnidades.setText("" + (generador.nextInt(9) + 1));
+            jLabelUnidades.paintImmediately(0, 0, jLabelUnidades.getWidth(), jLabelUnidades.getHeight());
+            try {
+                Thread.sleep(80);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Sorteo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        jLabelUnidades.setText(numPremiado.substring(2,3));
+        jLabelUnidades.paintImmediately(0, 0, jLabelUnidades.getWidth(), jLabelUnidades.getHeight());
+ 
     }//GEN-LAST:event_jButtonGenerarActionPerformed
 
     /**
